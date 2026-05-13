@@ -2,6 +2,8 @@ import { motion } from 'motion/react';
 import { Mail, MapPin, FileText, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 
+const FORMSPREE_FORM_ID = import.meta.env.VITE_FORMSPREE_FORM_ID as string | undefined;
+
 export function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -11,13 +13,65 @@ export function Contact() {
   });
 
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    const formId = FORMSPREE_FORM_ID?.trim();
+    if (!formId) {
+      setSubmitStatus('error');
+      setSubmitMessage('This form is not configured yet. Add VITE_FORMSPREE_FORM_ID for production.');
+      return;
+    }
+
+    setSubmitStatus('submitting');
+    setSubmitMessage(null);
+
+    try {
+      const res = await fetch(`https://formspree.io/f/${formId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          organization: formData.organization || '—',
+          message: formData.message,
+          _subject: `Arenafy.com contact: ${formData.name}`,
+        }),
+      });
+
+      const data = (await res.json().catch(() => null)) as {
+        error?: string;
+        errors?: Record<string, string>;
+      } | null;
+
+      if (res.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', organization: '', message: '' });
+        setSubmitMessage('Thanks — your message was sent. We will get back to you soon.');
+        return;
+      }
+
+      setSubmitStatus('error');
+      const fieldErrors = data?.errors ? Object.values(data.errors).filter(Boolean).join(' ') : '';
+      setSubmitMessage(
+        data?.error || fieldErrors || 'Something went wrong. Please try again or email contact@arenafy.com.',
+      );
+    } catch {
+      setSubmitStatus('error');
+      setSubmitMessage('Network error. Please try again or email contact@arenafy.com.');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (submitStatus === 'success' || submitStatus === 'error') {
+      setSubmitStatus('idle');
+      setSubmitMessage(null);
+    }
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -179,19 +233,35 @@ export function Contact() {
                 />
               </div>
 
+              {submitMessage && (
+                <p
+                  role={submitStatus === 'error' ? 'alert' : 'status'}
+                  className={
+                    submitStatus === 'success'
+                      ? 'text-[--color-arenafy-green] text-sm'
+                      : 'text-red-400 text-sm'
+                  }
+                >
+                  {submitMessage}
+                </p>
+              )}
+
               <motion.button
                 type="submit"
-                className="group relative w-full px-8 py-4 transition-all duration-300 rounded-xl overflow-hidden flex items-center justify-center gap-2"
+                disabled={submitStatus === 'submitting'}
+                className="group relative w-full px-8 py-4 transition-all duration-300 rounded-xl overflow-hidden flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{
                   fontSize: '1rem',
                   fontWeight: 600,
                   backgroundColor: '#14e580',
                   color: '#000000'
                 }}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                whileHover={submitStatus === 'submitting' ? undefined : { scale: 1.01 }}
+                whileTap={submitStatus === 'submitting' ? undefined : { scale: 0.99 }}
               >
-                <span className="relative z-10">Send Message</span>
+                <span className="relative z-10">
+                  {submitStatus === 'submitting' ? 'Sending…' : 'Send Message'}
+                </span>
                 <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </motion.button>
