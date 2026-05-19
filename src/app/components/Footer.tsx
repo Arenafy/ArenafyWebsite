@@ -13,7 +13,7 @@ export function Footer() {
             <img
               src="src/imports/Arenafy_Logo_White.png"
               alt="Arenafy"
-              className="h-7 w-auto object-contain"
+              className="h-[1.925rem] w-auto object-contain"
             />
           </div>
 

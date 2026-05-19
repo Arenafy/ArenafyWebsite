@@ -34,7 +34,7 @@ export function Navigation() {
             <img
               src="src/imports/Arenafy_Logo_White.png"
               alt="Arenafy"
-              className="h-8 w-auto object-contain group-hover:opacity-80 transition-opacity duration-300"
+              className="h-[2.2rem] w-auto object-contain group-hover:opacity-80 transition-opacity duration-300"
             />
           </a>
 
