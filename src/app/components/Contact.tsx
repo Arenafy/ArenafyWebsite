@@ -331,41 +331,17 @@ export function Contact() {
               </div>
             </div>
 
-            {/* Government Contracting */}
+            {/* Connecting Systems */}
             <div className="relative p-8 bg-gradient-to-br from-[--color-arenafy-green]/10 to-transparent backdrop-blur-xl border border-[--color-arenafy-green]/20 rounded-2xl overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[--color-arenafy-green] to-transparent" />
               <h3 className="mb-3 text-white" style={{ fontSize: '1.125rem', fontWeight: 600 }}>
-                Government Contracting
+                Connecting Systems. Enabling Decisions.
               </h3>
               <p className="text-zinc-400" style={{ fontSize: '0.9375rem', lineHeight: 1.7 }}>
-                Arenafy is actively developing capabilities for federal and state government engagements.
-                Contact us to discuss your public sector modernization requirements.
+                Disconnected systems create operational blind spots and fragmented reporting. Arenafy helps
+                organizations unify operational data and build scalable environments that support visibility,
+                automation, and AI-enabled workflows.
               </p>
-            </div>
-
-            {/* Animated Visual Element */}
-            <div className="relative h-40 bg-gradient-to-br from-zinc-900/50 to-black/50 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[--color-arenafy-green]/5 to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-40">
-                <svg className="w-full h-full" viewBox="0 0 300 160">
-                  {[...Array(12)].map((_, i) => (
-                    <motion.circle
-                      key={i}
-                      cx={30 + i * 24}
-                      cy="80"
-                      r="3"
-                      fill="var(--color-arenafy-green)"
-                      initial={{ opacity: 0.2 }}
-                      animate={{ opacity: [0.2, 1, 0.2] }}
-                      transition={{
-                        duration: 2,
-                        delay: i * 0.15,
-                        repeat: Infinity,
-                      }}
-                    />
-                  ))}
-                </svg>
-              </div>
             </div>
           </motion.div>
         </div>

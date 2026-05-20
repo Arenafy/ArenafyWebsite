@@ -1,5 +1,99 @@
 import { motion, useScroll, useTransform } from 'motion/react';
-import { Building2, Lock, Scale, Shield, Database, Zap } from 'lucide-react';
+import {
+  Link2,
+  Layers,
+  Zap,
+  Database,
+  BarChart3,
+  Workflow,
+  Sparkles,
+  Shield,
+} from 'lucide-react';
+
+const leftFeatures = [
+  {
+    icon: Link2,
+    title: 'Connected Systems',
+    description: 'Unifying fragmented operational environments across the organization.',
+  },
+  {
+    icon: Layers,
+    title: 'Scalable Infrastructure',
+    description: 'Modern analytics environments designed for long-term flexibility and growth.',
+  },
+  {
+    icon: Zap,
+    title: 'Intelligent Workflows',
+    description: 'Automation and reporting systems built to improve operational efficiency.',
+  },
+];
+
+const rightFeatures = [
+  {
+    icon: Database,
+    title: 'Data Foundations',
+    description: 'Reliable, analytics-ready operational data.',
+  },
+  {
+    icon: BarChart3,
+    title: 'Decision Visibility',
+    description: 'Reporting environments designed for faster, more informed execution.',
+  },
+  {
+    icon: Workflow,
+    title: 'Workflow Automation',
+    description: 'Reducing manual processes across operational systems.',
+  },
+  {
+    icon: Sparkles,
+    title: 'AI Readiness',
+    description: 'Infrastructure prepared for intelligent systems and AI-enabled operations.',
+  },
+];
+
+function FeatureCard({
+  feature,
+  index,
+  direction,
+}: {
+  feature: (typeof leftFeatures)[number];
+  index: number;
+  direction: 'left' | 'right';
+}) {
+  return (
+    <motion.div
+      key={feature.title}
+      className="group relative p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 hover:border-[--color-arenafy-green]/40 rounded-xl transition-all duration-500 overflow-hidden"
+      initial={{ opacity: 0, x: direction === 'left' ? -30 : 30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-[--color-arenafy-green]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="relative z-10 flex items-start gap-4">
+        <div
+          className="relative flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-500"
+          style={{
+            background: 'linear-gradient(135deg, rgba(20,229,128,0.15), rgba(20,229,128,0.05))',
+            border: '1.5px solid rgba(20,229,128,0.4)',
+            boxShadow: '0 0 20px rgba(20,229,128,0.3)',
+          }}
+        >
+          <feature.icon style={{ color: '#14e580' }} size={24} strokeWidth={2.5} />
+        </div>
+        <div>
+          <h3 className="mb-2 text-white" style={{ fontSize: '1.125rem', fontWeight: 600 }}>
+            {feature.title}
+          </h3>
+          <p className="text-zinc-400" style={{ fontSize: '0.9375rem', lineHeight: 1.6 }}>
+            {feature.description}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 import { useRef } from 'react';
 
 export function PublicSector() {
@@ -89,123 +183,18 @@ export function PublicSector() {
         </motion.div>
 
         {/* Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-          {/* Left: Feature Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 lg:items-start">
           <div className="space-y-6">
-            {[
-              {
-                icon: Building2,
-                title: 'Enterprise Scale',
-                description: 'Proven capability to deliver complex data infrastructure projects for large organizations with demanding requirements.',
-              },
-              {
-                icon: Lock,
-                title: 'Security First',
-                description: 'Architectural approaches aligned with enterprise security standards and compliance requirements.',
-              },
-              {
-                icon: Scale,
-                title: 'Operational Excellence',
-                description: 'Focus on sustainable, maintainable systems that support long-term organizational success.',
-              },
-            ].map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                className="group relative p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 hover:border-[--color-arenafy-green]/40 rounded-xl transition-all duration-500 overflow-hidden"
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                {/* Glow on hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[--color-arenafy-green]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                <div className="relative z-10 flex items-start gap-4">
-                  <div className="relative flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-500" style={{ background: 'linear-gradient(135deg, rgba(20,229,128,0.15), rgba(20,229,128,0.05))', border: '1.5px solid rgba(20,229,128,0.4)', boxShadow: '0 0 20px rgba(20,229,128,0.3)' }}>
-                    <feature.icon style={{ color: '#14e580' }} size={24} strokeWidth={2.5} />
-                  </div>
-                  <div>
-                    <h3 className="mb-2 text-white" style={{ fontSize: '1.125rem', fontWeight: 600 }}>
-                      {feature.title}
-                    </h3>
-                    <p className="text-zinc-400" style={{ fontSize: '0.9375rem', lineHeight: 1.6 }}>
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
+            {leftFeatures.map((feature, index) => (
+              <FeatureCard key={feature.title} feature={feature} index={index} direction="left" />
             ))}
           </div>
 
-          {/* Right: Visual Panel */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {/* Glassmorphic Panel */}
-            <div className="relative h-full min-h-[400px] bg-gradient-to-br from-zinc-900/80 to-zinc-950/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 overflow-hidden">
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[--color-arenafy-green]/10 via-transparent to-emerald-500/10" />
-
-              {/* Floating Stats */}
-              <div className="relative z-10 space-y-8">
-                {[
-                  { icon: Shield, label: 'Security & Compliance', value: 'Enterprise-grade' },
-                  { icon: Database, label: 'Data Infrastructure', value: 'Cloud-native' },
-                  { icon: Zap, label: 'Integration Speed', value: 'Optimized' },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={stat.label}
-                    className="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 + i * 0.1 }}
-                  >
-                    <div className="relative w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(20,229,128,0.15), rgba(20,229,128,0.05))', border: '1.5px solid rgba(20,229,128,0.4)', boxShadow: '0 0 15px rgba(20,229,128,0.3)' }}>
-                      <stat.icon style={{ color: '#14e580' }} size={20} strokeWidth={2.5} />
-                    </div>
-                    <div>
-                      <div className="text-zinc-400" style={{ fontSize: '0.8125rem' }}>
-                        {stat.label}
-                      </div>
-                      <div className="text-white" style={{ fontSize: '1rem', fontWeight: 600 }}>
-                        {stat.value}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Animated Background Pattern */}
-              <div className="absolute bottom-0 right-0 w-64 h-64 opacity-20">
-                <svg viewBox="0 0 200 200">
-                  {[...Array(5)].map((_, i) => (
-                    <motion.circle
-                      key={i}
-                      cx="100"
-                      cy="100"
-                      r={30 + i * 15}
-                      stroke="var(--color-arenafy-green)"
-                      strokeWidth="1"
-                      fill="none"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 0.3 }}
-                      transition={{
-                        duration: 2,
-                        delay: i * 0.2,
-                        repeat: Infinity,
-                        repeatType: 'reverse',
-                      }}
-                    />
-                  ))}
-                </svg>
-              </div>
-            </div>
-          </motion.div>
+          <div className="space-y-6">
+            {rightFeatures.map((feature, index) => (
+              <FeatureCard key={feature.title} feature={feature} index={index} direction="right" />
+            ))}
+          </div>
         </div>
 
         {/* Government Contracting Card */}

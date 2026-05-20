@@ -109,8 +109,8 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Arenafy helps organizations modernize data systems, integrate enterprise platforms, and deliver
-          actionable intelligence through cloud analytics and automation.
+          Arenafy partners with organizations to modernize data systems, integrate enterprise platforms, and deliver
+          actionable intelligence through cloud analytics, automation, and AI-enabled infrastructure.
         </motion.p>
 
         {/* CTA Buttons */}
