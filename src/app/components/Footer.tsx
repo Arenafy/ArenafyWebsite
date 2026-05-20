@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import arenafyLogo from '@/imports/Arenafy_Logo_White.png';
 
 export function Footer() {
   return (
@@ -11,7 +12,7 @@ export function Footer() {
           {/* Logo */}
           <div className="flex items-center">
             <img
-              src="src/imports/Arenafy_Logo_White.png"
+              src={arenafyLogo}
               alt="Arenafy"
               className="h-[1.925rem] w-auto object-contain"
             />

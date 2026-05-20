@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import arenafyLogo from '@/imports/Arenafy_Logo_White.png';
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +33,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-20">
           <a href="#" className="flex items-center group">
             <img
-              src="src/imports/Arenafy_Logo_White.png"
+              src={arenafyLogo}
               alt="Arenafy"
               className="h-[2.2rem] w-auto object-contain group-hover:opacity-80 transition-opacity duration-300"
             />
