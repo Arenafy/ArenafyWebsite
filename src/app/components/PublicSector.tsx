@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import {
   Link2,
@@ -5,7 +6,6 @@ import {
   Zap,
   Database,
   BarChart3,
-  Workflow,
   Sparkles,
   Shield,
 } from 'lucide-react';
@@ -40,11 +40,6 @@ const rightFeatures = [
     description: 'Reporting environments designed for faster, more informed execution.',
   },
   {
-    icon: Workflow,
-    title: 'Workflow Automation',
-    description: 'Reducing manual processes across operational systems.',
-  },
-  {
     icon: Sparkles,
     title: 'AI Readiness',
     description: 'Infrastructure prepared for intelligent systems and AI-enabled operations.',
@@ -62,8 +57,7 @@ function FeatureCard({
 }) {
   return (
     <motion.div
-      key={feature.title}
-      className="group relative p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 hover:border-[--color-arenafy-green]/40 rounded-xl transition-all duration-500 overflow-hidden"
+      className="group relative h-full w-full p-6 bg-zinc-900/50 backdrop-blur-sm border border-white/10 hover:border-[--color-arenafy-green]/40 rounded-xl transition-all duration-500 overflow-hidden"
       initial={{ opacity: 0, x: direction === 'left' ? -30 : 30 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
@@ -71,7 +65,7 @@ function FeatureCard({
     >
       <div className="absolute inset-0 bg-gradient-to-r from-[--color-arenafy-green]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-      <div className="relative z-10 flex items-start gap-4">
+      <div className="relative z-10 flex h-full items-start gap-4">
         <div
           className="relative flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-500"
           style={{
@@ -82,11 +76,11 @@ function FeatureCard({
         >
           <feature.icon style={{ color: '#14e580' }} size={24} strokeWidth={2.5} />
         </div>
-        <div>
+        <div className="flex flex-1 flex-col min-h-[4.5rem]">
           <h3 className="mb-2 text-white" style={{ fontSize: '1.125rem', fontWeight: 600 }}>
             {feature.title}
           </h3>
-          <p className="text-zinc-400" style={{ fontSize: '0.9375rem', lineHeight: 1.6 }}>
+          <p className="text-zinc-400 flex-1" style={{ fontSize: '0.9375rem', lineHeight: 1.6 }}>
             {feature.description}
           </p>
         </div>
@@ -94,7 +88,6 @@ function FeatureCard({
     </motion.div>
   );
 }
-import { useRef } from 'react';
 
 export function PublicSector() {
   const ref = useRef(null);
@@ -182,18 +175,31 @@ export function PublicSector() {
           </p>
         </motion.div>
 
-        {/* Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 lg:items-start">
-          <div className="space-y-6">
-            {leftFeatures.map((feature, index) => (
-              <FeatureCard key={feature.title} feature={feature} index={index} direction="left" />
+        {/* Feature cards — paired rows on desktop for equal height/width */}
+        <div className="mb-20">
+          <div className="hidden lg:flex flex-col gap-6">
+            {leftFeatures.map((leftFeature, index) => (
+              <div
+                key={leftFeature.title}
+                className="grid grid-cols-2 gap-6 items-stretch"
+              >
+                <FeatureCard feature={leftFeature} index={index} direction="left" />
+                <FeatureCard feature={rightFeatures[index]} index={index} direction="right" />
+              </div>
             ))}
           </div>
 
-          <div className="space-y-6">
-            {rightFeatures.map((feature, index) => (
-              <FeatureCard key={feature.title} feature={feature} index={index} direction="right" />
-            ))}
+          <div className="grid grid-cols-1 gap-6 lg:hidden">
+            <div className="space-y-6">
+              {leftFeatures.map((feature, index) => (
+                <FeatureCard key={feature.title} feature={feature} index={index} direction="left" />
+              ))}
+            </div>
+            <div className="space-y-6">
+              {rightFeatures.map((feature, index) => (
+                <FeatureCard key={feature.title} feature={feature} index={index} direction="right" />
+              ))}
+            </div>
           </div>
         </div>
 
